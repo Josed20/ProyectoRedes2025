@@ -1,1 +1,182 @@
 // app global css in SCSS form
+
+// ============================================
+// GOOGLE FONTS IMPORT - Cyber Theme
+// ============================================
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+// ============================================
+// GLOBAL BACKGROUND & BODY STYLES
+// ============================================
+body {
+  font-family: 'Rajdhani', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  background: linear-gradient(135deg, #e0f7ff 0%, #f0e6ff 100%);
+  background-attachment: fixed;
+  transition: background 0.5s ease;
+}
+
+body.body--dark {
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 100%);
+}
+
+// ============================================
+// SMOOTH SCROLLBAR
+// ============================================
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 217, 255, 0.3);
+  border-radius: 5px;
+}
+
+body.body--dark ::-webkit-scrollbar-thumb {
+  background: rgba(126, 34, 206, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 217, 255, 0.6);
+}
+
+body.body--dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(126, 34, 206, 0.8);
+}
+
+// ============================================
+// UTILITY CLASSES - Glassmorphism
+// ============================================
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(0, 217, 255, 0.3);
+  border-radius: 16px;
+}
+
+body.body--dark .glass-effect {
+  background: rgba(10, 10, 26, 0.7);
+  border: 1px solid rgba(126, 34, 206, 0.4);
+}
+
+.glass-effect-strong {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(0, 217, 255, 0.4);
+}
+
+body.body--dark .glass-effect-strong {
+  background: rgba(10, 10, 26, 0.85);
+  border: 1px solid rgba(126, 34, 206, 0.6);
+}
+
+// ============================================
+// TEXT UTILITIES - Cyber Glow
+// ============================================
+.text-glow-cyan {
+  text-shadow: 0 0 10px rgba(0, 217, 255, 0.6), 0 0 20px rgba(0, 217, 255, 0.3);
+}
+
+.text-glow-purple {
+  text-shadow: 0 0 10px rgba(126, 34, 206, 0.6), 0 0 20px rgba(126, 34, 206, 0.3);
+}
+
+.text-gradient-cyber {
+  background: linear-gradient(90deg, #00d9ff, #7e22ce);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+// ============================================
+// ANIMATIONS - Floating, Pulse, Glow
+// ============================================
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 217, 255, 0.6), 0 0 50px rgba(0, 217, 255, 0.3);
+  }
+}
+
+body.body--dark {
+  @keyframes pulse-glow-dark {
+    0%, 100% {
+      box-shadow: 0 0 10px rgba(126, 34, 206, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 25px rgba(126, 34, 206, 0.6), 0 0 50px rgba(126, 34, 206, 0.3);
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+// ============================================
+// CUSTOM QUASAR OVERRIDES
+// ============================================
+.q-card {
+  overflow: hidden;
+}
+
+.q-btn {
+  text-transform: none !important;
+  font-weight: 600;
+}
+
+.q-field__label {
+  font-weight: 500;
+}
+
+// ============================================
+// PAGE CONTAINER STYLING
+// ============================================
+.q-page {
+  padding: 24px;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+}
+
+// ============================================
+// RESPONSIVE UTILITIES
+// ============================================
+.mobile-only {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+.desktop-only {
+  display: block;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
