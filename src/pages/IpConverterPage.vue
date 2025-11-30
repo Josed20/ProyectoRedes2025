@@ -71,11 +71,11 @@
                   unelevated
                   rounded
                   color="cyan"
-                  label="Convertir IPv4"
+                  :label="primaryButtonLabel"
                   icon="swap_horiz"
                   class="full-width"
-                  @click="convertIPv4ToAllFormats"
-                  :disable="!ipInput || !!errorMessage"
+                  @click="handlePrimaryConversion"
+                  :disable="primaryButtonDisabled"
                 />
                 <q-btn
                   outline
@@ -84,8 +84,8 @@
                   label="Extraer IPv4 desde IPv6"
                   icon="download"
                   class="full-width"
-                  @click="convertIPv6ToIPv4"
-                  :disable="!ipInput || !!errorMessage"
+                  @click="extractIPv4FromIPv6"
+                  :disable="secondaryButtonDisabled"
                 />
                 <q-btn
                   flat
@@ -135,20 +135,62 @@
                   Resultados
                 </div>
 
+                <!-- Tipo de IP Detectado -->
+                <div class="result-item q-mb-md">
+                  <div class="result-label">Tipo Detectado</div>
+                  <div class="result-value">
+                    <q-chip
+                      :color="conversionResult.type === 'ipv4' ? 'cyan' : 'deep-purple'"
+                      text-color="white"
+                      :icon="conversionResult.type === 'ipv4' ? 'label' : 'label'"
+                    >
+                      {{ conversionResult.type === 'ipv4' ? 'IPv4' : conversionResult.type === 'ipv6' ? 'IPv6' : 'IPv6 → IPv4' }}
+                    </q-chip>
+                  </div>
+                </div>
+
                 <!-- IP Original -->
                 <div class="result-item q-mb-md">
                   <div class="result-label">IP Original</div>
-                  <div class="result-value">
-                    <q-chip color="cyan" text-color="white" icon="input">
-                      {{ conversionResult.original }}
-                    </q-chip>
+                  <div class="result-value code-text">
+                    {{ conversionResult.original }}
+                    <q-btn
+                      flat
+                      dense
+                      round
+                      size="sm"
+                      icon="content_copy"
+                      color="cyan"
+                      @click="copyToClipboard(conversionResult.original)"
+                    >
+                      <q-tooltip>Copiar</q-tooltip>
+                    </q-btn>
+                  </div>
+                </div>
+
+                <!-- IPv6 Expandido (solo para IPv6) -->
+                <div v-if="conversionResult.expanded" class="result-item q-mb-md">
+                  <div class="result-label">IPv6 Expandido</div>
+                  <div class="result-value code-text">
+                    {{ conversionResult.expanded }}
+                    <q-btn
+                      flat
+                      dense
+                      round
+                      size="sm"
+                      icon="content_copy"
+                      color="cyan"
+                      @click="copyToClipboard(conversionResult.expanded)"
+                    >
+                      <q-tooltip>Copiar</q-tooltip>
+                    </q-btn>
                   </div>
                 </div>
 
                 <!-- Formato Binario -->
                 <div v-if="conversionResult.binary" class="result-item q-mb-md">
                   <div class="result-label">Formato Binario</div>
-                  <div class="result-value code-text">
+                  <div class="result-value code-text binary-text">
                     {{ conversionResult.binary }}
                     <q-btn
                       flat
@@ -183,9 +225,9 @@
                   </div>
                 </div>
 
-                <!-- IPv6 Mapeada -->
+                <!-- IPv6 Mapeada (solo para IPv4) -->
                 <div v-if="conversionResult.ipv6Mapped" class="result-item q-mb-md">
-                  <div class="result-label">IPv6 Mapeada (Decimal)</div>
+                  <div class="result-label">IPv6 Mapeada</div>
                   <div class="result-value code-text">
                     {{ conversionResult.ipv6Mapped }}
                     <q-btn
@@ -202,9 +244,9 @@
                   </div>
                 </div>
 
-                <!-- IPv6 Mapeada Hexadecimal -->
+                <!-- IPv6 Mapeada Hexadecimal (solo para IPv4) -->
                 <div v-if="conversionResult.ipv6MappedHex" class="result-item q-mb-md">
-                  <div class="result-label">IPv6 Mapeada (Hexadecimal)</div>
+                  <div class="result-label">IPv6 Mapeada (Hex)</div>
                   <div class="result-value code-text">
                     {{ conversionResult.ipv6MappedHex }}
                     <q-btn
@@ -221,11 +263,11 @@
                   </div>
                 </div>
 
-                <!-- IPv4 Restaurado -->
+                <!-- IPv4 Restaurado (solo para IPv6 mapeado) -->
                 <div v-if="conversionResult.ipv4Restored" class="result-item q-mb-md">
-                  <div class="result-label">IPv4 Restaurado</div>
+                  <div class="result-label">IPv4 Embebido</div>
                   <div class="result-value">
-                    <q-chip color="deep-purple" text-color="white" icon="download">
+                    <q-chip color="teal" text-color="white" icon="download">
                       {{ conversionResult.ipv4Restored }}
                     </q-chip>
                   </div>
@@ -239,6 +281,9 @@
                     Información Adicional
                   </div>
                   <div class="info-chips">
+                    <q-chip v-if="conversionResult.info.version" size="sm" color="indigo" text-color="white">
+                      IPv{{ conversionResult.info.version }}
+                    </q-chip>
                     <q-chip v-if="conversionResult.info.class" size="sm" color="cyan" text-color="white">
                       Clase {{ conversionResult.info.class }}
                     </q-chip>
@@ -270,6 +315,7 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useQuasar } from 'quasar'
 import { useNetworkCalculations } from '../composables/useNetworkCalculations'
 import GlassCard from '../components/UI/GlassCard.vue'
@@ -277,13 +323,40 @@ import GlassCard from '../components/UI/GlassCard.vue'
 const $q = useQuasar()
 const {
   ipInput,
-  conversionResult,
+  ipConversionResult: conversionResult,
   errorMessage,
+  detectedIpType,
   convertIPv4ToAllFormats,
-  convertIPv6ToIPv4,
+  convertIPv6ToAllFormats,
+  extractIPv4FromIPv6,
   validateIpInput,
-  clearAll
+  clearIpConverter
 } = useNetworkCalculations()
+
+// Botones dinámicos según el tipo de IP detectado
+const primaryButtonLabel = computed(() => {
+  return detectedIpType.value === 'ipv6' ? 'Convertir IPv6' : 'Convertir IPv4'
+})
+
+const primaryButtonDisabled = computed(() => {
+  return !ipInput.value || !!errorMessage.value
+})
+
+const secondaryButtonDisabled = computed(() => {
+  return !ipInput.value || !!errorMessage.value || detectedIpType.value !== 'ipv6'
+})
+
+const handlePrimaryConversion = () => {
+  if (detectedIpType.value === 'ipv6') {
+    convertIPv6ToAllFormats()
+  } else {
+    convertIPv4ToAllFormats()
+  }
+}
+
+const clearAll = () => {
+  clearIpConverter()
+}
 
 const copyToClipboard = (text) => {
   navigator.clipboard.writeText(text).then(() => {
@@ -428,6 +501,12 @@ body.body--dark .result-value {
 
 body.body--dark .code-text {
   background: rgba(0, 0, 0, 0.3);
+}
+
+.binary-text {
+  font-size: 11px;
+  word-break: break-all;
+  line-height: 1.6;
 }
 
 .info-chips {
