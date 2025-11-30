@@ -12,7 +12,11 @@ import {
   ipv4ToHex,
   ipv4ToIPv6Mapped,
   ipv6MappedToIPv4,
-  getIpInfo
+  getIpInfo,
+  detectIpType,
+  ipv6ToBinary,
+  ipv6ToHex,
+  expandIPv6
 } from '../utils/ipUtils'
 import {
   calculateSubnet,
@@ -21,6 +25,15 @@ import {
   suggestSubnetForHosts,
   cidrToSubnetMask
 } from '../utils/subnetUtils'
+
+// ============================================
+// ESTADO COMPARTIDO GLOBAL (Singleton)
+// ============================================
+const sharedIpInput = ref('')
+const sharedDetectedIpType = computed(() => {
+  if (!sharedIpInput.value) return null
+  return detectIpType(sharedIpInput.value.trim())
+})
 
 export function useNetworkCalculations () {
   // ============================================
@@ -32,15 +45,28 @@ export function useNetworkCalculations () {
   // ============================================
   // CONVERSOR DE IP - Estado y Métodos
   // ============================================
-  const ipInput = ref('')
   const ipConversionResult = ref(null)
 
+  // Usar el estado compartido global
+  const ipInput = computed({
+    get: () => sharedIpInput.value,
+    set: (value) => { sharedIpInput.value = value }
+  })
+
+  // Usar el detectedIpType compartido
+  const detectedIpType = computed(() => sharedDetectedIpType.value)
+
   const validateIpInput = (val) => {
-    if (!val) return 'Por favor ingrese una dirección IP'
-    if (!isValidIPv4(val) && !isValidIPv6(val)) {
-      return 'Dirección IP inválida'
+    if (!val) {
+      errorMessage.value = ''
+      return
     }
-    return true
+    const type = detectIpType(val)
+    if (!type) {
+      errorMessage.value = 'Dirección IP inválida'
+    } else {
+      errorMessage.value = ''
+    }
   }
 
   const convertIPv4ToAllFormats = () => {
@@ -57,16 +83,58 @@ export function useNetworkCalculations () {
       }
 
       const binary = ipv4ToBinary(ip)
-      const hex = ipv4ToHex(ip)
-      const ipv6 = ipv4ToIPv6Mapped(ip)
+      const hexadecimal = ipv4ToHex(ip)
+      const ipv6Data = ipv4ToIPv6Mapped(ip)
       const info = getIpInfo(ip)
 
       const result = {
         type: 'ipv4',
         original: ip,
         binary,
-        hex,
-        ipv6Mapped: ipv6,
+        hexadecimal,
+        ipv6Mapped: ipv6Data.compressed,
+        ipv6MappedHex: ipv6Data.mixed,
+        info
+      }
+
+      ipConversionResult.value = result
+      return result
+    } catch (error) {
+      errorMessage.value = error.message
+      return null
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  const convertIPv6ToAllFormats = () => {
+    errorMessage.value = ''
+    ipConversionResult.value = null
+    isLoading.value = true
+
+    try {
+      const ip = ipInput.value.trim()
+
+      if (!isValidIPv6(ip)) {
+        errorMessage.value = 'Por favor ingrese una dirección IPv6 válida'
+        return null
+      }
+
+      const expanded = expandIPv6(ip)
+      const binary = ipv6ToBinary(ip)
+      const hexadecimal = ipv6ToHex(ip)
+      const info = getIpInfo(ip)
+
+      // Intentar extraer IPv4 si está mapeado
+      const ipv4Restored = ipv6MappedToIPv4(ip)
+
+      const result = {
+        type: 'ipv6',
+        original: ip,
+        expanded,
+        binary,
+        hexadecimal,
+        ipv4Restored,
         info
       }
 
@@ -96,7 +164,7 @@ export function useNetworkCalculations () {
       const ipv4 = ipv6MappedToIPv4(ip)
 
       if (!ipv4) {
-        errorMessage.value = 'Esta dirección IPv6 no es una IPv4 mapeada. Solo se pueden convertir direcciones del formato ::ffff:x.x.x.x'
+        errorMessage.value = 'Esta dirección IPv6 no contiene una IPv4 embebida. Solo se pueden extraer direcciones del formato ::ffff:x.x.x.x'
         return null
       }
 
@@ -105,7 +173,7 @@ export function useNetworkCalculations () {
       const result = {
         type: 'ipv6-to-ipv4',
         original: ip,
-        ipv4Extracted: ipv4,
+        ipv4Restored: ipv4,
         info
       }
 
@@ -120,7 +188,7 @@ export function useNetworkCalculations () {
   }
 
   const clearIpConverter = () => {
-    ipInput.value = ''
+    sharedIpInput.value = ''
     ipConversionResult.value = null
     errorMessage.value = ''
   }
@@ -288,8 +356,10 @@ export function useNetworkCalculations () {
     // Conversor de IP
     ipInput,
     ipConversionResult,
+    detectedIpType,
     validateIpInput,
     convertIPv4ToAllFormats,
+    convertIPv6ToAllFormats,
     extractIPv4FromIPv6,
     clearIpConverter,
 

@@ -126,7 +126,7 @@
               </q-item-section>
               <q-item-section>
                 <q-item-label class="nav-label">Conversor de IP</q-item-label>
-                <q-item-label caption class="nav-caption">IPv4 → Binario, Hex, IPv6</q-item-label>
+                <q-item-label caption class="nav-caption">{{ ipConverterSubtitle }}</q-item-label>
               </q-item-section>
               <q-item-section side>
                 <q-icon name="arrow_forward_ios" size="xs" />
@@ -306,14 +306,26 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useQuasar } from 'quasar'
 import { useAppConfigStore } from '../stores/appConfig'
+import { useNetworkCalculations } from '../composables/useNetworkCalculations'
 import AnimatedBackground from '../components/UI/AnimatedBackground.vue'
 
 const $q = useQuasar()
 const appConfig = useAppConfigStore()
 const showAbout = ref(false)
+
+// Obtener el tipo de IP detectado desde el composable compartido
+const { detectedIpType } = useNetworkCalculations()
+
+// Subtítulo dinámico para el conversor de IP
+const ipConverterSubtitle = computed(() => {
+  if (detectedIpType.value === 'ipv6') {
+    return 'IPv6 → Binario, Hex, IPv4'
+  }
+  return 'IPv4 → Binario, Hex, IPv6'
+})
 
 onMounted(() => {
   appConfig.initializeFromStorage()

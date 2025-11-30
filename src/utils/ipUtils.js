@@ -125,6 +125,93 @@ export function ipv6MappedToIPv4 (ipv6) {
 }
 
 /**
+ * Detecta automáticamente el tipo de IP (IPv4 o IPv6)
+ * @param {string} ip - Dirección IP
+ * @returns {string|null} 'ipv4', 'ipv6' o null si no es válida
+ */
+export function detectIpType (ip) {
+  if (isValidIPv4(ip)) return 'ipv4'
+  if (isValidIPv6(ip)) return 'ipv6'
+  return null
+}
+
+/**
+ * Expande una dirección IPv6 comprimida a su forma completa
+ * @param {string} ipv6 - Dirección IPv6 (puede estar comprimida)
+ * @returns {string} Dirección IPv6 expandida
+ */
+export function expandIPv6 (ipv6) {
+  if (!isValidIPv6(ipv6)) {
+    throw new Error('Dirección IPv6 inválida')
+  }
+
+  // Si contiene IPv4 embebido (::ffff:192.168.1.1)
+  const ipv4Match = ipv6.match(/::ffff:(\d+\.\d+\.\d+\.\d+)$/i)
+  if (ipv4Match) {
+    const ipv4 = ipv4Match[1]
+    const octets = ipv4.split('.').map(Number)
+    const hexParts = octets.map(o => o.toString(16).padStart(2, '0'))
+    const ipv4Hex = `${hexParts[0]}${hexParts[1]}:${hexParts[2]}${hexParts[3]}`
+    ipv6 = `::ffff:${ipv4Hex}`
+  }
+
+  // Separar por '::'
+  const parts = ipv6.split('::')
+
+  if (parts.length === 1) {
+    // No hay compresión
+    const groups = parts[0].split(':')
+    return groups.map(g => g.padStart(4, '0')).join(':')
+  }
+
+  // Hay compresión
+  const leftParts = parts[0] ? parts[0].split(':') : []
+  const rightParts = parts[1] ? parts[1].split(':') : []
+  const missingGroups = 8 - leftParts.length - rightParts.length
+
+  const expanded = [
+    ...leftParts.map(p => p.padStart(4, '0')),
+    ...Array(missingGroups).fill('0000'),
+    ...rightParts.map(p => p.padStart(4, '0'))
+  ]
+
+  return expanded.join(':')
+}
+
+/**
+ * Convierte una dirección IPv6 a formato binario completo
+ * @param {string} ipv6 - Dirección IPv6
+ * @returns {string} Dirección IPv6 en formato binario separado por ':'
+ */
+export function ipv6ToBinary (ipv6) {
+  if (!isValidIPv6(ipv6)) {
+    throw new Error('Dirección IPv6 inválida')
+  }
+
+  const expanded = expandIPv6(ipv6)
+  const groups = expanded.split(':')
+
+  return groups.map(group => {
+    const decimal = parseInt(group, 16)
+    return decimal.toString(2).padStart(16, '0')
+  }).join(':')
+}
+
+/**
+ * Convierte una dirección IPv6 a formato hexadecimal expandido
+ * @param {string} ipv6 - Dirección IPv6
+ * @returns {string} Dirección IPv6 en formato hexadecimal expandido
+ */
+export function ipv6ToHex (ipv6) {
+  if (!isValidIPv6(ipv6)) {
+    throw new Error('Dirección IPv6 inválida')
+  }
+
+  const expanded = expandIPv6(ipv6)
+  return expanded.toUpperCase()
+}
+
+/**
  * Obtiene información detallada de una dirección IP
  * @param {string} ip - Dirección IP
  * @returns {object} Información detallada de la IP
@@ -139,7 +226,8 @@ export function getIpInfo (ip) {
     isValid: isV4 || isV6,
     isPrivate: false,
     isLoopback: false,
-    class: null
+    class: null,
+    type: null
   }
 
   if (isV4) {
@@ -168,6 +256,36 @@ export function getIpInfo (ip) {
 
     // Verificar si es loopback
     info.isLoopback = (firstOctet === 127)
+
+    // Tipo de red
+    if (info.isLoopback) {
+      info.type = 'Loopback'
+    } else if (info.isPrivate) {
+      info.type = 'Privada'
+    } else {
+      info.type = 'Pública'
+    }
+  }
+
+  if (isV6) {
+    const lowerIp = ip.toLowerCase()
+
+    // IPv6 mapeada IPv4
+    if (lowerIp.includes('::ffff:')) {
+      info.type = 'IPv4-Mapeada'
+    } else if (lowerIp.startsWith('fe80:')) {
+      info.type = 'Link-Local'
+    } else if (lowerIp.startsWith('::1')) {
+      info.type = 'Loopback'
+      info.isLoopback = true
+    } else if (lowerIp.startsWith('fc') || lowerIp.startsWith('fd')) {
+      info.type = 'Privada (ULA)'
+      info.isPrivate = true
+    } else if (lowerIp.startsWith('ff')) {
+      info.type = 'Multicast'
+    } else {
+      info.type = 'Global Unicast'
+    }
   }
 
   return info
