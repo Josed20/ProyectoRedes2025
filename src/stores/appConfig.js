@@ -11,10 +11,10 @@ export const useAppConfigStore = defineStore('appConfig', () => {
   const $q = useQuasar()
 
   // Estado reactivo
-  const darkMode = ref(false)
+  const darkMode = ref(true) // Default to dark mode for professional look
   const sidebarOpen = ref(true)
   const language = ref('es')
-  const animationsEnabled = ref(true)
+  const animationsEnabled = ref(false) // Disable distracting animations by default
 
   // Computed
   const isDark = computed(() => darkMode.value)

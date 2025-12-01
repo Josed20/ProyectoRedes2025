@@ -18,7 +18,7 @@
 
         <q-toolbar-title class="toolbar-title">
           <q-icon name="hub" size="sm" class="q-mr-sm glow-icon" />
-          <span class="cyber-text">NETWORK TOOLS</span>
+          <span class="cyber-text text-h6 text-weight-bold">NETWORK TOOLS</span>
         </q-toolbar-title>
 
         <q-space />
@@ -75,13 +75,13 @@
           <!-- Logo/Brand Section con efecto glow -->
           <div class="text-center q-mb-lg brand-section">
             <div class="logo-container">
-              <q-icon name="hub" size="72px" class="logo-icon" />
+              <q-icon name="hub" size="64px" class="logo-icon" />
               <div class="logo-glow"></div>
             </div>
             <div class="text-h5 text-weight-bold cyber-text q-mt-md">
               NETWORK TOOLS
             </div>
-            <div class="text-caption text-grey-5 q-mt-xs">
+            <div class="text-body2 text-grey-4 q-mt-xs">
               Advanced IP Suite v2.0
             </div>
           </div>
@@ -102,8 +102,8 @@
                 <q-icon name="home" />
               </q-item-section>
               <q-item-section>
-                <q-item-label class="nav-label">Inicio</q-item-label>
-                <q-item-label caption class="nav-caption">Dashboard principal</q-item-label>
+                <q-item-label class="nav-label text-body1">Inicio</q-item-label>
+                <q-item-label caption class="nav-caption text-body2">Dashboard principal</q-item-label>
               </q-item-section>
             </q-item>
 
@@ -125,8 +125,8 @@
                 <q-icon name="swap_horiz" />
               </q-item-section>
               <q-item-section>
-                <q-item-label class="nav-label">Conversor de IP</q-item-label>
-                <q-item-label caption class="nav-caption">{{ ipConverterSubtitle }}</q-item-label>
+                <q-item-label class="nav-label text-body1">Conversor de IP</q-item-label>
+                <q-item-label caption class="nav-caption text-body2">{{ ipConverterSubtitle }}</q-item-label>
               </q-item-section>
               <q-item-section side>
                 <q-icon name="arrow_forward_ios" size="xs" />
@@ -144,8 +144,8 @@
                 <q-icon name="calculate" />
               </q-item-section>
               <q-item-section>
-                <q-item-label class="nav-label">Calculador de Subredes</q-item-label>
-                <q-item-label caption class="nav-caption">Análisis CIDR y máscaras</q-item-label>
+                <q-item-label class="nav-label text-body1">Calculador de Subredes</q-item-label>
+                <q-item-label caption class="nav-caption text-body2">Análisis CIDR y máscaras</q-item-label>
               </q-item-section>
               <q-item-section side>
                 <q-icon name="arrow_forward_ios" size="xs" />
@@ -337,41 +337,44 @@ onMounted(() => {
 /* GLASSMORPHISM STYLES */
 /* ============================================ */
 .glass-header {
-  background: rgba(0, 217, 255, 0.1) !important;
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(0, 217, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  background: rgba(248, 250, 252, 0.95) !important;
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
 body.body--dark .glass-header {
-  background: rgba(126, 34, 206, 0.15) !important;
-  border-bottom: 1px solid rgba(126, 34, 206, 0.3);
+  background: rgba(15, 23, 42, 0.95) !important;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.8);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
 }
 
 .glass-drawer {
-  background: rgba(255, 255, 255, 0.05) !important;
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-right: 1px solid rgba(0, 217, 255, 0.2);
+  background: rgba(248, 250, 252, 0.98) !important;
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border-right: 1px solid rgba(226, 232, 240, 0.5);
 }
 
 body.body--dark .glass-drawer {
-  background: rgba(10, 10, 26, 0.8) !important;
-  border-right: 1px solid rgba(126, 34, 206, 0.3);
+  background: rgba(15, 23, 42, 0.98) !important;
+  border-right: 1px solid rgba(51, 65, 85, 0.8);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(0, 217, 255, 0.3);
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  border: 1px solid rgba(226, 232, 240, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 body.body--dark .glass-card {
-  background: rgba(10, 10, 26, 0.7) !important;
-  border: 1px solid rgba(126, 34, 206, 0.4);
+  background: rgba(30, 41, 59, 0.95) !important;
+  border: 1px solid rgba(51, 65, 85, 0.8);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 }
 
 /* ============================================ */
@@ -380,90 +383,109 @@ body.body--dark .glass-card {
 .cyber-text {
   font-family: 'Orbitron', 'Rajdhani', sans-serif;
   font-weight: 700;
-  letter-spacing: 2px;
-  background: linear-gradient(90deg, #00d9ff, #7e22ce);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+  letter-spacing: 1.5px;
+  color: #0f172a;
+}
+
+body.body--dark .cyber-text {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
 }
 
 .cyber-btn {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #64748b;
+}
+
+body.body--dark .cyber-btn {
+  color: #cbd5e1;
 }
 
 .cyber-btn:hover {
-  background: rgba(0, 217, 255, 0.15) !important;
-  box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+  background: rgba(6, 182, 212, 0.1) !important;
+  color: #06b6d4;
 }
 
 body.body--dark .cyber-btn:hover {
-  background: rgba(126, 34, 206, 0.15) !important;
-  box-shadow: 0 0 20px rgba(126, 34, 206, 0.4);
+  background: rgba(6, 182, 212, 0.15) !important;
+  color: #06b6d4;
 }
 
 .glow-icon {
-  filter: drop-shadow(0 0 8px #00d9ff);
-  animation: iconPulse 3s ease-in-out infinite;
+  color: #06b6d4;
+  filter: drop-shadow(0 0 4px rgba(6, 182, 212, 0.3));
 }
 
 @keyframes iconPulse {
-  0%, 100% { filter: drop-shadow(0 0 8px #00d9ff); }
-  50% { filter: drop-shadow(0 0 16px #00d9ff); }
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(6, 182, 212, 0.3)); }
+  50% { filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.5)); }
 }
 
 /* ============================================ */
 /* NAVIGATION ITEMS */
 /* ============================================ */
 .nav-item {
-  border-radius: 12px;
-  margin-bottom: 8px;
+  border-radius: 8px;
+  margin-bottom: 6px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid transparent;
 }
 
 .nav-item:hover {
-  background: rgba(0, 217, 255, 0.1) !important;
-  border: 1px solid rgba(0, 217, 255, 0.3);
+  background: rgba(6, 182, 212, 0.08) !important;
+  border: 1px solid rgba(6, 182, 212, 0.2);
   transform: translateX(4px);
 }
 
 body.body--dark .nav-item:hover {
-  background: rgba(126, 34, 206, 0.1) !important;
-  border: 1px solid rgba(126, 34, 206, 0.3);
+  background: rgba(6, 182, 212, 0.1) !important;
+  border: 1px solid rgba(6, 182, 212, 0.3);
 }
 
 .nav-item--active {
-  background: linear-gradient(90deg, rgba(0, 217, 255, 0.2), rgba(126, 34, 206, 0.2)) !important;
-  border: 1px solid rgba(0, 217, 255, 0.5);
-  box-shadow: 0 4px 16px rgba(0, 217, 255, 0.3);
+  background: rgba(6, 182, 212, 0.15) !important;
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.2);
+}
+
+body.body--dark .nav-item--active {
+  background: rgba(6, 182, 212, 0.2) !important;
+  border: 1px solid rgba(6, 182, 212, 0.5);
+  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
 }
 
 .nav-label {
   font-weight: 600;
-  color: #00d9ff;
+  font-size: 16px;
+  color: #334155;
 }
 
 body.body--dark .nav-label {
-  color: #b794f6;
+  color: #e2e8f0;
 }
 
 .nav-caption {
-  font-size: 11px;
+  font-size: 14px;
   opacity: 0.7;
+  color: #64748b;
+}
+
+body.body--dark .nav-caption {
+  color: #94a3b8;
 }
 
 /* ============================================ */
 /* SEPARATORS & SECTIONS */
 /* ============================================ */
 .separator-glow {
-  background: linear-gradient(90deg, transparent, #00d9ff, transparent);
-  height: 2px;
-  opacity: 0.5;
+  background: rgba(6, 182, 212, 0.3);
+  height: 1px;
+  opacity: 0.3;
 }
 
 body.body--dark .separator-glow {
-  background: linear-gradient(90deg, transparent, #7e22ce, transparent);
+  background: rgba(6, 182, 212, 0.4);
+  opacity: 0.4;
 }
 
 .separator-subtle {
@@ -471,15 +493,15 @@ body.body--dark .separator-glow {
 }
 
 .section-header {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 1.5px;
-  color: #00d9ff;
-  opacity: 0.8;
+  letter-spacing: 1.2px;
+  color: #64748b;
+  opacity: 0.9;
 }
 
 body.body--dark .section-header {
-  color: #b794f6;
+  color: #94a3b8;
 }
 
 /* ============================================ */
@@ -495,21 +517,20 @@ body.body--dark .section-header {
 }
 
 .logo-icon {
-  color: #00d9ff;
-  filter: drop-shadow(0 0 20px #00d9ff);
-  animation: logoFloat 3s ease-in-out infinite;
+  color: #06b6d4;
+  filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.3));
   position: relative;
   z-index: 2;
 }
 
 body.body--dark .logo-icon {
-  color: #b794f6;
-  filter: drop-shadow(0 0 20px #7e22ce);
+  color: #06b6d4;
+  filter: drop-shadow(0 0 12px rgba(6, 182, 212, 0.4));
 }
 
 @keyframes logoFloat {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  50% { transform: translateY(-4px); }
 }
 
 .logo-glow {
@@ -517,16 +538,15 @@ body.body--dark .logo-icon {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100px;
-  height: 100px;
-  background: radial-gradient(circle, rgba(0, 217, 255, 0.3), transparent 70%);
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.2), transparent 70%);
   border-radius: 50%;
-  animation: glowPulse 3s ease-in-out infinite;
   z-index: 1;
 }
 
 body.body--dark .logo-glow {
-  background: radial-gradient(circle, rgba(126, 34, 206, 0.3), transparent 70%);
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.25), transparent 70%);
 }
 
 @keyframes glowPulse {
@@ -561,7 +581,7 @@ body.body--dark .logo-glow {
 /* ABOUT DIALOG */
 /* ============================================ */
 .bg-gradient-cyber {
-  background: linear-gradient(135deg, #00d9ff 0%, #7e22ce 100%);
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
 }
 
 .feature-list {
@@ -576,15 +596,15 @@ body.body--dark .logo-glow {
 }
 
 .feature-list li::before {
-  content: '▹';
+  content: '╹';
   position: absolute;
   left: 0;
-  color: #00d9ff;
+  color: #06b6d4;
   font-weight: bold;
 }
 
 body.body--dark .feature-list li::before {
-  color: #b794f6;
+  color: #06b6d4;
 }
 
 .tech-stack {
@@ -595,12 +615,12 @@ body.body--dark .feature-list li::before {
 /* SETTINGS SECTION */
 /* ============================================ */
 .settings-section {
-  border-top: 1px solid rgba(0, 217, 255, 0.1);
+  border-top: 1px solid rgba(6, 182, 212, 0.15);
   padding-top: 16px;
 }
 
 body.body--dark .settings-section {
-  border-top: 1px solid rgba(126, 34, 206, 0.2);
+  border-top: 1px solid rgba(6, 182, 212, 0.2);
 }
 
 .settings-item {
@@ -609,11 +629,11 @@ body.body--dark .settings-section {
 }
 
 .settings-item:hover {
-  background: rgba(0, 217, 255, 0.05);
+  background: rgba(6, 182, 212, 0.05);
 }
 
 body.body--dark .settings-item:hover {
-  background: rgba(126, 34, 206, 0.05);
+  background: rgba(6, 182, 212, 0.08);
 }
 
 /* ============================================ */

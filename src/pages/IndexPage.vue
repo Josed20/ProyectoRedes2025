@@ -11,10 +11,10 @@
           <h1 class="hero-title cyber-text">
             NETWORK TOOLS
           </h1>
-          <p class="hero-subtitle text-h5 q-mt-md q-mb-lg">
+          <p class="hero-subtitle text-h5 text-weight-medium q-mt-md q-mb-lg">
             Suite profesional de herramientas para análisis y conversión de direcciones IP
           </p>
-          <div class="hero-description text-body1 text-grey-7 q-mb-xl">
+          <div class="hero-description text-h6 q-mb-xl">
             Transforma tus redes con tecnología de vanguardia y diseño moderno
           </div>
         </div>
@@ -32,7 +32,7 @@
               <div class="text-h5 text-weight-bold q-mb-sm tool-title">
                 Conversor de IP
               </div>
-              <p class="text-body2 text-grey-6 q-mb-md">
+              <p class="text-body1 q-mb-md">
                 Transforma direcciones IPv4 a múltiples formatos: Binario, Hexadecimal, e IPv6 mapeado
               </p>
               <div class="feature-tags q-gutter-xs q-mb-md">
@@ -72,7 +72,7 @@
               <div class="text-h5 text-weight-bold q-mb-sm tool-title">
                 Calculador de Subredes
               </div>
-              <p class="text-body2 text-grey-6 q-mb-md">
+              <p class="text-body1 q-mb-md">
                 Análisis completo de redes IP con cálculo de máscaras, rangos de hosts y subdivisión automática
               </p>
               <div class="feature-tags q-gutter-xs q-mb-md">
@@ -234,22 +234,22 @@ const features = ref([
 }
 
 .hero-icon {
-  color: #00d9ff;
-  filter: drop-shadow(0 0 30px #00d9ff);
-  animation: heroFloat 4s ease-in-out infinite;
+  color: #06b6d4;
+  filter: drop-shadow(0 0 20px rgba(6, 182, 212, 0.4));
+  animation: heroFloat 6s ease-in-out infinite;
   position: relative;
   z-index: 2;
 }
 
 body.body--dark .hero-icon {
-  color: #b794f6;
-  filter: drop-shadow(0 0 30px #7e22ce);
+  color: #06b6d4;
+  filter: drop-shadow(0 0 25px rgba(6, 182, 212, 0.5));
 }
 
 @keyframes heroFloat {
   0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-15px) rotate(5deg); }
-  75% { transform: translateY(-10px) rotate(-5deg); }
+  25% { transform: translateY(-10px) rotate(3deg); }
+  75% { transform: translateY(-6px) rotate(-3deg); }
 }
 
 .hero-glow {
@@ -257,21 +257,21 @@ body.body--dark .hero-icon {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(0, 217, 255, 0.4), transparent 70%);
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.25), transparent 70%);
   border-radius: 50%;
-  animation: heroGlow 4s ease-in-out infinite;
+  animation: heroGlow 6s ease-in-out infinite;
   z-index: 1;
 }
 
 body.body--dark .hero-glow {
-  background: radial-gradient(circle, rgba(126, 34, 206, 0.4), transparent 70%);
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.3), transparent 70%);
 }
 
 @keyframes heroGlow {
-  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
 }
 
 .hero-title {
@@ -283,12 +283,12 @@ body.body--dark .hero-glow {
 
 .hero-subtitle {
   font-family: 'Rajdhani', sans-serif;
-  font-weight: 600;
-  color: #555;
+  font-weight: 500;
+  color: #475569;
 }
 
 body.body--dark .hero-subtitle {
-  color: #b0b0b0;
+  color: #cbd5e1;
 }
 
 .hero-description {
@@ -315,33 +315,22 @@ body.body--dark .hero-subtitle {
 }
 
 .tool-icon {
-  color: #00d9ff;
+  color: #06b6d4;
   transition: all 0.3s ease;
 }
 
-.tool-card:nth-child(2) .tool-icon {
-  color: #7e22ce;
-}
-
 .tool-card:hover .tool-icon {
-  filter: drop-shadow(0 0 20px currentColor);
+  filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.5));
   transform: scale(1.1);
 }
 
 .tool-title {
-  color: #00d9ff;
+  color: #0f172a;
+  font-size: 22px;
 }
 
 body.body--dark .tool-title {
-  color: #b794f6;
-}
-
-.tool-card:nth-child(2) .tool-title {
-  color: #7e22ce;
-}
-
-body.body--dark .tool-card:nth-child(2) .tool-title {
-  color: #d4a5f9;
+  color: #ffffff;
 }
 
 .feature-tags {

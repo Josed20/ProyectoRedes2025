@@ -197,22 +197,11 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg,
-    #0a0a1a 0%,
-    #1a0a2e 25%,
-    #16213e 50%,
-    #0f3460 75%,
-    #0a0a1a 100%
-  );
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
+  /* Static background - no animation */
+  background: #0f172a;
 }
 
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+/* Removed distracting gradient animation */
 
 /* SVG Network Grid */
 .network-grid {
@@ -221,69 +210,32 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.6;
+  opacity: 0.08; /* Very low opacity - subtle background */
 }
 
 .node {
-  fill: #00d9ff;
-  filter: drop-shadow(0 0 8px #00d9ff);
+  fill: #06b6d4;
+  opacity: 0.3;
 }
 
 .connection-line {
-  stroke: #7e22ce;
+  stroke: #06b6d4;
   stroke-width: 1;
-  stroke-opacity: 0.2;
+  stroke-opacity: 0.1;
 }
 
 .pulse {
-  fill: #00ffff;
-  filter: drop-shadow(0 0 6px #00ffff);
+  fill: #06b6d4;
+  opacity: 0.4;
 }
 
-/* Partículas flotantes */
+/* Partículas flotantes - removed for better readability */
 .particles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
+  display: none; /* Hide distracting particles */
 }
 
-.particle {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background: radial-gradient(circle, #00d9ff 0%, transparent 70%);
-  border-radius: 50%;
-  animation: float linear infinite;
-}
-
-@keyframes float {
-  0% {
-    transform: translateY(0) translateX(0);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-100vh) translateX(50px);
-    opacity: 0;
-  }
-}
-
-/* Modo oscuro - ajustar colores */
+/* Modo oscuro - fondo profesional */
 body.body--dark .gradient-background {
-  background: linear-gradient(135deg,
-    #000000 0%,
-    #0f0520 25%,
-    #1a0033 50%,
-    #0a192f 75%,
-    #000000 100%
-  );
+  background: #0f172a; /* Professional deep slate blue */
 }
 </style>
