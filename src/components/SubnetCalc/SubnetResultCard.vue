@@ -201,9 +201,9 @@
 
     <!-- Nota informativa -->
     <q-separator />
-    <q-card-section class="bg-blue-1">
-      <div class="text-caption">
-        <q-icon name="info" color="blue" size="sm" class="q-mr-xs" />
+    <q-card-section class="info-note-section">
+      <div class="text-caption text-white">
+        <q-icon name="info" color="cyan" size="sm" class="q-mr-xs" />
         <strong>Nota:</strong> La dirección de red y broadcast no son utilizables para hosts.
         El rango utilizable va desde {{ result.firstUsable }} hasta {{ result.lastUsable }}.
       </div>
@@ -261,5 +261,13 @@ export default {
 .code-text {
   font-family: 'Courier New', monospace;
   font-size: 11px;
+}
+
+.info-note-section {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+}
+
+body.body--dark .info-note-section {
+  background: linear-gradient(135deg, #0a1929 0%, #1e3a5f 100%);
 }
 </style>

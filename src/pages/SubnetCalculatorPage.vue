@@ -74,7 +74,7 @@
                 icon="share"
                 label="Dividir en Subredes Más Pequeñas"
                 class="q-mb-md"
-                header-class="bg-blue-1"
+                header-class="bg-black-1"
               >
                 <q-card>
                   <q-card-section>
@@ -110,7 +110,7 @@
               <q-expansion-item
                 icon="search"
                 label="Verificar si una IP pertenece a esta subred"
-                header-class="bg-green-1"
+                header-class="bg-black-1"
               >
                 <q-card>
                   <q-card-section>
@@ -177,13 +177,13 @@
                   bordered
                   class="subnet-item"
                 >
-                  <q-card-section class="bg-blue-1">
-                    <div class="text-weight-bold">Subred #{{ subnet.index }}</div>
-                    <div class="text-caption">{{ subnet.notation }}</div>
+                  <q-card-section class="subnet-item-header">
+                    <div class="text-weight-bold text-white">Subred #{{ subnet.index }}</div>
+                    <div class="text-caption text-cyan">{{ subnet.notation }}</div>
                   </q-card-section>
                   <q-separator />
-                  <q-card-section dense>
-                    <div class="text-caption">
+                  <q-card-section dense class="subnet-item-body">
+                    <div class="text-caption text-grey-3">
                       <div><strong>Red:</strong> {{ subnet.networkAddress }}</div>
                       <div><strong>Broadcast:</strong> {{ subnet.broadcastAddress }}</div>
                       <div><strong>Rango:</strong> {{ subnet.ipRange }}</div>
@@ -199,7 +199,7 @@
 
       <!-- Info Card (when no result) -->
       <q-card v-if="!subnetResult" flat bordered class="q-mt-lg info-card">
-        <q-card-section class="bg-green-1">
+        <q-card-section class="bg-black-1">
           <div class="text-h6 q-mb-md">
             <q-icon name="help_outline" color="green" class="q-mr-xs" />
             Guía de Uso
@@ -208,7 +208,7 @@
           <div class="q-gutter-md">
             <div>
               <div class="text-weight-bold q-mb-xs">¿Qué es una Subred?</div>
-              <div class="text-body2 text-grey-8">
+              <div class="text-body2 text-white-8">
                 Una subred es una subdivisión lógica de una red IP. El proceso de crear subredes
                 permite dividir una red grande en redes más pequeñas y manejables, mejorando el
                 rendimiento y la seguridad.
@@ -217,13 +217,13 @@
 
             <div>
               <div class="text-weight-bold q-mb-xs">Notación CIDR:</div>
-              <div class="text-body2 text-grey-8">
+              <div class="text-body2 text-white-8">
                 CIDR (Classless Inter-Domain Routing) utiliza una barra seguida de un número (ej: /24)
                 para indicar cuántos bits están dedicados a la parte de red de la dirección IP.
                 <br><br>
                 Ejemplos comunes:
               </div>
-              <ul class="q-pl-md text-body2 text-grey-8">
+              <ul class="q-pl-md text-body2 text-white-8">
                 <li><strong>/24</strong> - Máscara 255.255.255.0 - 254 hosts</li>
                 <li><strong>/16</strong> - Máscara 255.255.0.0 - 65,534 hosts</li>
                 <li><strong>/8</strong> - Máscara 255.0.0.0 - 16,777,214 hosts</li>
@@ -232,10 +232,10 @@
 
             <div>
               <div class="text-weight-bold q-mb-xs">Ejemplo de Cálculo:</div>
-              <div class="text-body2 text-grey-8">
+              <div class="text-body2 text-white-8">
                 Ingresa <strong>192.168.1.0</strong> con CIDR <strong>/24</strong> para obtener:
               </div>
-              <ul class="q-pl-md text-body2 text-grey-8">
+              <ul class="q-pl-md text-body2 text-white-8">
                 <li>Dirección de Red: 192.168.1.0</li>
                 <li>Dirección de Broadcast: 192.168.1.255</li>
                 <li>Rango Utilizable: 192.168.1.1 - 192.168.1.254</li>
@@ -344,11 +344,40 @@ export default {
 
 .subnet-item {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+  border: 1px solid rgba(0, 217, 255, 0.3);
 }
 
 .subnet-item:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 217, 255, 0.4);
+}
+
+.subnet-item-header {
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.2) 0%, rgba(126, 34, 206, 0.2) 100%);
+  border-bottom: 1px solid rgba(0, 217, 255, 0.2);
+}
+
+.subnet-item-body {
+  background: rgba(10, 26, 41, 0.5);
+}
+
+body.body--dark .subnet-item {
+  background: linear-gradient(135deg, #0a1929 0%, #1e3a5f 100%);
+  border: 1px solid rgba(126, 34, 206, 0.3);
+}
+
+body.body--dark .subnet-item:hover {
+  box-shadow: 0 4px 20px rgba(126, 34, 206, 0.4);
+}
+
+body.body--dark .subnet-item-header {
+  background: linear-gradient(135deg, rgba(126, 34, 206, 0.2) 0%, rgba(0, 217, 255, 0.2) 100%);
+  border-bottom: 1px solid rgba(126, 34, 206, 0.2);
+}
+
+body.body--dark .subnet-item-body {
+  background: rgba(10, 10, 26, 0.5);
 }
 
 /* Transitions */
